@@ -5,4 +5,4 @@ Hi, my name is Varin, and this is a showcase of some NLP projects I've done as p
 ### Portfolio Contents
 
 1. Overview of NLP
-2. Text Processing with Python
+2. [Text Processing with Python](https://github.com/Whooosp/HLT-class/tree/main/HW1) - Basic I/O, text processing, and OOP using Python
