@@ -4,4 +4,5 @@ Hi, my name is Varin, and this is a showcase of some NLP projects I've done as p
 
 ### Portfolio Contents
 
-
+1. Overview of NLP
+2. Text Processing with Python
