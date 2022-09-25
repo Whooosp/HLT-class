@@ -8,3 +8,4 @@ Hi, my name is Varin, and this is a showcase of some NLP projects I've done as p
 2. [Text Processing with Python](https://github.com/Whooosp/HLT-class/tree/main/HW1) - Basic I/O, text processing, and OOP using Python
 3. [Exploring NLTK](https://github.com/Whooosp/HLT-class/blob/main/Portfolio%20Assignment%203%20Exploring%20NLTK.pdf) - Exploring basic functionality of the NLTK library. Tokenization, stemming, lemmatizing, and other preprocessing steps.
 4. [Guessing Game](https://github.com/Whooosp/HLT-class/tree/main/Guessing_Game) - Guessing game showcasing NLTK preprocessing and POS tagging tools
+5. [Exploring WordNet](https://github.com/Whooosp/HLT-class/blob/main/Exploring%20WordNet%20and%20SentiWordNet.pdf) - Experimenting with various WordNet and SentiWordNet functionalities for sentiment analysis
