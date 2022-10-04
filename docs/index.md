@@ -9,3 +9,4 @@ Hi, my name is Varin, and this is a showcase of some NLP projects I've done as p
 3. [Exploring NLTK](https://github.com/Whooosp/HLT-class/blob/main/Portfolio%20Assignment%203%20Exploring%20NLTK.pdf) - Exploring basic functionality of the NLTK library. Tokenization, stemming, lemmatizing, and other preprocessing steps.
 4. [Guessing Game](https://github.com/Whooosp/HLT-class/tree/main/Guessing_Game) - Guessing game showcasing NLTK preprocessing and POS tagging tools
 5. [Exploring WordNet](https://github.com/Whooosp/HLT-class/blob/main/Exploring%20WordNet%20and%20SentiWordNet.pdf) - Experimenting with various WordNet and SentiWordNet functionalities for sentiment analysis
+6. [NGrams](https://github.com/adityaguin/CS-4395/tree/main/docs/Portfolio%20Chapter%208%3B%20NGRAMS) - Exploring unigrams, bigrams, and creating probabilistic language models for 3 languages: English, French and Italian (worked on with Aditya Guin)
