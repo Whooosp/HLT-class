@@ -10,6 +10,9 @@ from collections import Counter
 import pandas as pd
 
 
+# Web Crawler
+#   Authors: Varin Sikand (vss180000) Aditya Guin (asg180005)
+
 def visible(element):
     if element.parent.name in ['style', 'script', '[document]', 'head', 'title']:
         return False
@@ -30,7 +33,7 @@ def scrape_url(url: str, to_save: bool):
     data = soup.find_all(text=True)
 
     titles = [t for t in data if t.parent.name == "title"]
-    title = titles[0] if len(titles) > 0 else url[url.index('://')+3:].replace('/', '_')
+    title = titles[0] if len(titles) > 0 else url[url.index('://') + 3:].replace('/', '_')
     title = ''.join(c for c in title if c.isalnum())
     title = f'url_{title}'
     print(title)
@@ -75,12 +78,11 @@ if __name__ == "__main__":
                 save_string += temp_line + ' ' if temp_line.strip() != '' else temp_line
         sentences = sent_tokenize(save_string)
         all_sentences = all_sentences | set(sentences)
-        with open("better"+filename, 'w', encoding='utf8') as f:
+        with open("better" + filename, 'w', encoding='utf8') as f:
             f.write(' '.join(sentences))
 
     token_counts = Counter()
     for filename in [name for name in os.listdir(os.getcwd()) if name.startswith("betterurl")]:
-
         with open(filename, 'r', encoding='utf8') as f:
             tokens = [t.lower() for t in word_tokenize(f.read()) if t.lower() not in stopwords.words('english')
                       and t.isalpha()]
@@ -101,9 +103,12 @@ if __name__ == "__main__":
     # DF is our knowledge base, stored efficiently such that each sentence is a row in a table
     # where each word has a True value in that row iff the word exists in the sentence. Therefore
     # when someone wants to know more about a word, all we need to do is return the sentences
-    # that have a value of True in that column
+    # that have a value of True in that column. Dataframe could also be converted to SQL table
+    # if a database connection is given to it.
 
     df.to_pickle('knowledge_base.p')
+
+    df.to_csv('knowledge_base.csv')
 
     # end of program
     print("end of crawler")
