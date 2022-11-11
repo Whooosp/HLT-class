@@ -183,7 +183,7 @@ class ChessBot:
 if __name__ == "__main__":
     start_time = time.time()
     # print('a'.startswith('abc'))
-    conn = sqlite3.connect("chess_schema")
+    conn = sqlite3.connect("chess_schema.sqlite")
     bot = ChessBot()
     chat = True
     print('Hi, I\'m Chester 1.0, a chatbot here to answer (hopefully) all your chess history questions!')
