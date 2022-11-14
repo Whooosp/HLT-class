@@ -1,14 +1,18 @@
-import nltk
-from nltk import sent_tokenize, word_tokenize, pos_tag
-from nltk.metrics.distance import jaro_winkler_similarity
-import spacy
-import torch
-import pandas as pd
-from date_extractor import extract_dates
-import time
-from transformers import AutoModelForTokenClassification, DistilBertTokenizerFast
+import os
 import sqlite3
 import unicodedata
+
+import pandas as pd
+import torch
+from date_extractor import extract_dates
+from flask import Flask, render_template, request
+from nltk.metrics.distance import jaro_winkler_similarity
+from transformers import AutoModelForTokenClassification, DistilBertTokenizerFast, AutoTokenizer, \
+    pipeline
+
+from model import BertClassifier
+
+INTENT_LABELS = ('PERSON_WHO_IS', 'PERSON_WHERE_IS', 'PERSON_WHEN_IS', 'TOURNAMENT', 'MISC')
 
 
 def find_best_match(keys, df, given_name):
@@ -29,7 +33,23 @@ class ChessBot:
         self.entities = None
         self.intent = ''
         self.sub_intent = ''
+        self.new_user = True
+        self.intro = False
+        self.user_name = ''
 
+        self.user_context = ''
+        self.exit = False
+
+        # self.qa_tokenizer = AutoTokenizer.from_pretrained("deepset/roberta-large-squad2")
+        # self.qa_model = AutoModelForQuestionAnswering.from_pretrained("deepset/roberta-large-squad2")
+
+        self.qa = pipeline('question-answering', model="deepset/roberta-large-squad2",
+                           tokenizer="deepset/roberta-large-squad2")
+
+        self.tokenizer = AutoTokenizer.from_pretrained("microsoft/deberta-v3-large")
+        self.model = BertClassifier()
+        self.model.load_state_dict(
+            torch.load('Best_Deberta_Model_v2.pt'))
         self.ner_classifier = AutoModelForTokenClassification.from_pretrained(
             "malduwais/distilbert-base-uncased-finetuned-ner")
         self.ner_tokenizer = DistilBertTokenizerFast.from_pretrained("malduwais/distilbert-base-uncased-finetuned-ner")
@@ -130,7 +150,7 @@ class ChessBot:
                 entity_dict[label].append(entity)
         if len(dates) > 0:
             database_entities['Date'] = str(next(d[0].year for d in dates))
-        # print(entity_dict)
+        print(entity_dict)
 
         # Distinctly identify tournament and people names from ambiguous tag
         if 'P_T_Name' in entity_dict:
@@ -138,23 +158,6 @@ class ChessBot:
                 if 'P_Name' in entity_dict and 'Tournament' in database_entities:
                     break
                 # Compute similarity for people
-                # max_full_name_score = 0.8
-                # max_full_name = ''
-                # for first_name, last_name, full_name in \
-                #         person_df[['First_name', 'Last_name', 'Full_name']].itertuples(index=None):
-                #     score = max(jaro_winkler_similarity(first_name.lower(), name.lower()),
-                #                 jaro_winkler_similarity(last_name.lower(), name.lower()),
-                #                 jaro_winkler_similarity(full_name.lower(), name.lower()))
-                #     if score >= max_full_name_score:
-                #         max_full_name_score = score
-                #         max_full_name = full_name
-                # max_tourn_name_score = 0.8
-                # max_tourn_name = ''
-                # for tourn_name, winner in tourn_df[['Tournament_name', 'winner']].itertuples(index=None):
-                #     score = jaro_winkler_similarity(tourn_name.lower(), name.lower())
-                #     if score >= max_tourn_name_score:
-                #         max_tourn_name_score = score
-                #         max_tourn_name = tourn_name
                 max_full_name, max_full_name_score = find_best_match(['First_name', 'Last_name', 'Full_name'],
                                                                      person_df,
                                                                      name)
@@ -162,7 +165,7 @@ class ChessBot:
                 # Similar to person
                 if max_full_name_score > max_tourn_name_score and max_full_name:
                     if 'P_Name' not in entity_dict:
-                        entity_dict['P_Name'] = [max_full_name[-1]]
+                        entity_dict['P_Name'] = [name]
                     continue
                 # Similar to Tournament name
                 elif max_tourn_name:
@@ -173,62 +176,50 @@ class ChessBot:
         if 'Location' in entity_dict:
             for location in entity_dict['Location']:
                 # location_idx = sentence.split().index(location)
+                max_tourn_name, max_tourn_name_score = '', .8
+
                 if 'Tournament' not in database_entities:
-                    # max_tourn_name_score = 0.8
-                    # max_tourn_name = ''
-                    # for tourn_name in tourn_df['Tournament_name'].unique():
-                    #     score = jaro_winkler_similarity(tourn_name.lower(), location.lower())
-                    #     if score >= max_tourn_name_score:
-                    #         max_tourn_name_score = score
-                    #         max_tourn_name = tourn_name
                     max_tourn_name, max_tourn_name_score = find_best_match(['Tournament_Name'], tourn_df, location)
-                    if max_tourn_name:
-                        database_entities['Tournament'] = max_tourn_name[-1]
-                max_location, max_location_score = None, None
-                if intent == 'Tournament':
-                    max_location, max_location_score = find_best_match(['Tournament_Location'], tourn_df, location)
-                elif intent == 'Person':
-                    max_location, max_location_score = max(find_best_match(['Federation'], person_df, location),
-                                                           find_best_match(['Birthplace'], person_df, location),
-                                                           key=lambda x: x[1])
-                if max_location:
+                max_location, max_location_score = max(find_best_match(['Federation'], person_df, location),
+                                                       find_best_match(['Birthplace'], person_df, location),
+                                                       find_best_match(['Tournament_Location'], tourn_df, location),
+                                                       key=lambda x: x[1])
+                if max_location and max_location_score >= max_tourn_name_score \
+                        and 'Location' not in database_entities:
                     database_entities['Location'] = max_location[-1]
-                    break
+                elif max_tourn_name and max_tourn_name_score > max_location_score \
+                        and 'Tournament' not in database_entities:
+                    database_entities['Tournament'] = max_tourn_name[-1]
 
         # Checking for people
         if 'P_Name' in entity_dict:
             name = tuple(entity_dict['P_Name'][0].split())
             # print(name)
-            f_mask = person_df.First_name.apply(lambda x: set((n.lower() for n in name)) & set(x.lower().split()))
-            l_mask = person_df.Last_name.apply(lambda x: set((n.lower() for n in name)) & set(x.lower().split()))
+            f_mask = person_df.First_name.apply(lambda x: bool(set((n.lower() for n in name)) & set(x.lower().split())))
+            l_mask = person_df.Last_name.apply(lambda x: bool(set((n.lower() for n in name)) & set(x.lower().split())))
             full_mask = person_df.Full_name.apply(lambda x: ' '.join(name).lower() == x.lower())
             full_match = person_df[full_mask]
             partial_match = person_df[f_mask | l_mask]
             red_person_df = full_match if len(full_match) > 0 else partial_match
+            name_type = 'full' if any(full_mask) else 'partial'
 
             if len(red_person_df) > 1:
-                self.clarify = 'Person_mult'
-                self.clarified_sentence = sentence.lower().replace(' '.join(name), '%PERSON_NAME%')
-                return red_person_df['Full_name'].tolist()
+                self.clarify = 'Person_mult_valid'
+                database_entities['Person'] = red_person_df, ' '.join(name)
             elif len(red_person_df) == 1:
-                database_entities['Person'] = next(red_person_df.itertuples(index=None))
+                database_entities['Person'] = red_person_df, red_person_df['Full_name'].iloc[0]
+            # if len(red_person_df) > 0:
+            #     database_entities['Person'] = red_person_df, ' '.join(name)
             # If person name is incorrect
             else:
-                # print(name)
+                print(name)
                 # print(entity_dict['P_Name'])
-                self.clarify = 'Person_wrong'
+                if self.intent != 'MISC':
+                    self.clarify = 'Person_wrong'
+                else:
+                    return {}
 
                 given_name = ' '.join(name)
-                # max_full_name_score = 0.8
-                # max_full_name = ''
-                # for first_name, last_name, full_name in \
-                #         person_df[['First_name', 'Last_name', 'Full_name']].itertuples(index=None):
-                #     score = max(jaro_winkler_similarity(first_name.lower(), given_name.lower()),
-                #                 jaro_winkler_similarity(last_name.lower(), given_name.lower()),
-                #                 jaro_winkler_similarity(full_name.lower(), given_name.lower()))
-                #     if score >= max_full_name_score:
-                #         max_full_name_score = score
-                #         max_full_name = full_name
                 max_full_name, max_full_name_score = find_best_match(['First_name', 'Last_name', 'Full_name'],
                                                                      person_df,
                                                                      given_name)
@@ -247,39 +238,79 @@ class ChessBot:
             2022 - int(person_ent.Born[:4])
         location = person_ent.Federation
         title_year = person_ent.TitleYear
-        if self.sub_intent == 'Who_is':
+        if self.sub_intent == 'WHO_IS':
             built_msg += f'{person_name} is a {years_old} year old grandmaster from {location}. ' \
                          f'They have held the grandmaster title since {title_year}' if not person_ent.Died else \
                 f'{person_name} was a {years_old} year old grandmaster from {location}. ' \
                 f'They held the grandmaster title since {title_year} until they passed away in' \
                 f'{person_ent.Died}'
-        elif self.sub_intent == 'When_is':
+        elif self.sub_intent == 'WHEN_IS':
             built_msg += f"{person_name} was born on {person_ent.Born}"
             built_msg += f" and died on {person_ent.Died}" if person_ent.Died else ''
-        elif self.sub_intent == 'Where_is':
+        elif self.sub_intent == 'WHERE_IS':
             built_msg += f"{person_name} is from {location}"
         return built_msg
 
-    def build_tourn_msg(self, general_df, won_tourn=False):
+    def build_tourn_msg(self, general_df, winner_given=False):
         tournament_name = general_df.Tournament_Name.iloc[0]
         tournament_location = general_df.Tournament_Location.iloc[0]
+        # print(general_df)
+        winner_name = general_df.winner.iloc[0]
         if len(general_df['Tournament_Name']) == 1:
-            winner_name = general_df.winner.iloc[0]
             tournament_year = general_df.Year.iloc[0]
             return f'{winner_name} won the {tournament_year} {tournament_name} at {tournament_location}'
-        if not won_tourn:
+        if not winner_given:
             self.clarify = "Tourn_year"
-            self.entities = general_df, 'Person' in self.entities
+            self.entities = general_df
             return f"The {tournament_name} has run from {min(general_df['Year'])} to {max(general_df['Year'])} in " \
                    f"{tournament_location}. Please specify a year to know who won that particular tournament."
         if len(general_df['Tournament_Name']) <= 5:
+            winner_name = general_df.winner.iloc[0]
             year_list = sorted(general_df['Year'].tolist())
-            year_str = ', '.join(year_list[:-1]) + f"and {year_list[-1]}"
-            return f"{self.entities['Person'].Full_name} has won the {self.entities['Tournament']} in {year_str}"
-        return f"{self.entities['Person'].Full_name} has won the {self.entities['Tournament']} {len(general_df)}" \
-               f" times from {min(general_df['Year'])} to {max(general_df['Year'])}"
+            year_str = ', '.join(year_list[:-1])
+            year_str += "," if len(year_list) > 2 else ''
+            year_str += f" and {year_list[-1]}"
+            return f"{winner_name} has won the {tournament_name} " \
+                   f"(held in {tournament_location}) in {year_str}"
+        return f"{winner_name} has won the {tournament_name} (held in {tournament_location}) " \
+               f"{len(general_df)} times from {min(general_df['Year'])} to {max(general_df['Year'])}"
 
     def respond(self, sentence: str):
+        if self.exit or sentence == 'logout':
+            if self.user_name:
+                with open(f'./users/{self.user_name}.txt', 'w', encoding='utf-8') as f:
+                    f.write(self.user_context)
+            self.intro = True
+            self.clarify = 'skip'
+            return f"It was nice speaking with you, {self.user_name}, hopefully I was able to answer all of your" \
+                   f" questions! I look forward to speaking with you again in the future, who knows maybe my" \
+                   f" pea-brained developers will improve me someday or another!" if self.user_name \
+                else "Aww, ok, hopefully we get to talk some other time, stranger."
+        if self.intro:
+            msg = 'Hi, I\'m Chester 1.0, a chatbot here to answer (hopefully) all your chess history questions!\n' \
+                  '\nReal quick, before we get started, could you please give a ' \
+                  'username (with no spaces) for me to remember you by?'
+            self.new_user = True
+            self.intro = False
+            self.clarify = ''
+            return msg
+        if self.new_user:
+            if len(sentence.split()) > 1:
+                return "Please enter a username with no spaces"
+            self.new_user = False
+            self.user_name = sentence
+            if os.path.exists(f'./users/{self.user_name}.txt'):
+                with open(f'./users/{self.user_name}.txt', 'r', encoding='utf-8') as f:
+                    self.user_context = f.read()
+                return f"Welcome back, {self.user_name}, remember that you can log out anytime by saying 'logout'\n" \
+                       'Right now, I can only handle questions about grandmasters and tournaments, ' \
+                       'but if you don\'t know where to start, just ask me "How many grandmasters/tournaments are there?"' \
+                       'and I\'ll suggest some for you!'
+            return f"Nice to meet you, {self.user_name}, you can log out anytime by saying 'logout'\n" \
+                   'Right now, I can only handle questions about grandmasters and tournaments, ' \
+                   'but if you don\'t know where to start, just ask me "How many grandmasters/tournaments are there?"' \
+                   'and I\'ll suggest some for you!'
+
         # Bot is in error state(s)
         msg = ''
         if self.clarify == 'Person_wrong':
@@ -296,26 +327,6 @@ class ChessBot:
                 return 'Sorry, please re-enter your question then.'
             else:
                 return 'Sorry, please answer yes or no'
-        elif self.clarify == 'Person_mult':
-            if len(sentence) == 1 and sentence.isnumeric():
-                idx = int(sentence) - 1
-                if idx < 0 or idx >= len(self.entities):
-                    return f'Please either choose a number between 1 and {len(self.entities)} or type the name of' \
-                           f'the grandmaster. If you want to move on, though, feel free to just ask a new question!'
-                sentence = self.clarified_sentence.replace('%PERSON_NAME%', self.entities[idx])
-                self.clarify = ''
-                self.clarified_sentence = ''
-            else:
-                score, gm = max((jaro_winkler_similarity(sentence, ent), ent) if ent else (0., '')
-                                for ent in self.entities)
-                if score >= .8:
-                    sentence = self.clarified_sentence.replace('%PERSON_NAME%', gm)
-                    self.clarify = ''
-                    self.clarified_sentence = ''
-                else:
-                    self.clarify = 'skip'
-                    self.clarified_sentence = sentence
-                    return 'Alright, moving on'
         elif self.clarify == 'Person_mult_valid':
             person_ent = None
             if len(sentence) == 1 and sentence.isnumeric():
@@ -323,63 +334,79 @@ class ChessBot:
                 if idx < 0 or idx >= len(self.entities):
                     return f'Please either choose a number between 1 and {len(self.entities)} or type the name of' \
                            f'the grandmaster. If you want to move on, though, feel free to just ask a new question!'
-                self.clarify = ''
                 person_ent = self.entities[idx]
+                self.clarified_sentence = '%CONTINUE%'
             else:
                 score, pot_person_ent = max((jaro_winkler_similarity(sentence, ent.Full_name), ent) if ent else (0., '')
                                             for ent in self.entities)
                 if score >= .8:
-                    self.clarify = ''
                     person_ent = pot_person_ent
+                    self.clarified_sentence = '%CONTINUE%'
                 else:
                     self.clarify = 'skip'
                     self.clarified_sentence = sentence
                     return 'Alright, moving on'
-            return self.build_person_msg(person_ent)
-
+            return self.build_person_msg(person_ent) + "\nFeel free to give another grandmaster's name or number," \
+                                                       " or just ask another question and we'll move on"
         elif self.clarify == 'Tourn_mult':
             tourn_list = self.entities[1]
             general_df = self.entities[0]
             winner = self.entities[2]
             if len(sentence) == 1 and sentence.isnumeric():
                 idx = int(sentence) - 1
-                if idx < 0 or idx >= len(self.entities):
-                    return f'Please either choose a number between 1 and {len(self.entities)} or type the name of' \
+                if idx < 0 or idx >= len(tourn_list):
+                    return f'Please either choose a number between 1 and {len(tourn_list)} or type the name of ' \
                            f'a tournament. If you want to move on, though, feel free to just ask a new question!'
-                self.clarify = ''
                 general_df = general_df[general_df['Tournament_Name'] == tourn_list[idx]]
-                return self.build_tourn_msg(general_df, winner and len(general_df['winner'].unique()) == 1)
+                self.clarified_sentence = '%CONTINUE%'
             else:
                 score, pot_tournament = max((jaro_winkler_similarity(sentence, ent), ent) if ent else
-                                           (0., '') for ent in tourn_list)
+                                            (0., '') for ent in tourn_list)
                 if score >= .8:
-                    self.clarify = ''
                     general_df = general_df[general_df['Tournament_Name'] == pot_tournament]
-                    return self.build_tourn_msg(general_df,
-                                                winner and len(general_df['winner'].unique()) == 1)
+                    self.clarified_sentence = '%CONTINUE%'
+
                 else:
                     self.clarify = 'skip'
                     self.clarified_sentence = sentence
                     return 'Alright, moving on'
+            return self.build_tourn_msg(general_df, winner) + "\nFeel free to give another tournament's name or " \
+                                                              "number, or just ask another question and we'll move on"
         elif self.clarify == 'Tourn_year':
-            general_df = self.entities[0]
-            winner = self.entities[1]
+            general_df = self.entities
             years = general_df['Year'].tolist()
             if sentence not in years:
                 self.clarify = 'skip'
                 self.clarified_sentence = sentence
                 return 'Alright, moving on'
-            self.clarify = ''
             general_df = general_df[general_df['Year'] == sentence]
-            return self.build_tourn_msg(general_df, winner and len(general_df['winner'].unique()) == 1)
+            self.clarified_sentence = '%CONTINUE%'
+            return self.build_tourn_msg(general_df) + "\nFeel free to give another tournament's year, " \
+                                                      "or just ask another question and we'll move on"
         elif self.clarify == 'skip':
             self.clarify = ''
             self.clarified_sentence = ''
         # print(sentence)
 
-        self.intent = 'Person'
-        self.sub_intent = 'Who_is'
-        self.entities = self.extract_database_entities(sentence, self.person_df, self.tourn_df, self.intent)
+        tokens = self.tokenizer(sentence, padding=True,
+                                return_tensors='pt', return_token_type_ids=True)
+        with torch.no_grad():
+            output = self.model(tokens)
+        intent = INTENT_LABELS[int(torch.round(torch.nn.functional.softmax(output, dim=1)).argmax())]
+
+        print(intent)
+        if 'PERSON' in intent:
+            self.intent = 'Person'
+            self.sub_intent = intent[7:]
+        elif 'TOURN' in intent:
+            self.intent = 'Tournament'
+            self.sub_intent = ''
+        else:
+            self.intent = 'MISC'
+            self.sub_intent = ''
+
+        self.entities = self.extract_database_entities(sentence, self.person_df, self.tourn_df, self.intent) \
+            if self.clarified_sentence != '%CONTINUE%' else self.entities
 
         # Recent query caused bot to enter error state
         if self.clarify == 'Person_wrong':
@@ -390,44 +417,34 @@ class ChessBot:
             else:
                 self.clarify, self.clarified_sentence = '', ''
             return msg
-        elif self.clarify == 'Person_mult':
-            person_list = self.entities if len(self.entities) < 5 else self.entities[:5]
-            person_list = [f'{i + 1}. {ent}' for i, ent in enumerate(person_list)]
-            person_msg = '\n'.join(person_list)
-            msg = f'There seem to be many grandmasters with that name, please choose one from the following:\n' \
-                  f'{person_msg}'
-            return msg
-
-        # print(self.entities)
         if 'Tournament' in self.entities:
             self.intent = 'Tournament'
         msg = ''
         if self.intent == 'Person':
             location = self.entities['Location'] if 'Location' in self.entities else None
+            person_name = self.entities['Person'][1] if 'Person' in self.entities else None
             loc_f = lambda x, y: (bool({x.lower() if x else '', y.lower() if y else ''} &
                                        set(location.lower().replace(',', '').split()))
                                   if location else True)
-            loc_mask = self.person_df.apply(
+            general_df = self.entities['Person'][0] if person_name else self.person_df
+            loc_mask = general_df.apply(
                 lambda row: loc_f(row.Federation, row.Birthplace), axis=1)
-            date_mask = self.person_df['Born'].apply(
+            date_mask = general_df['Born'].apply(
                 lambda val: (val.startswith(str(self.entities['Date'])) if 'Date' in self.entities else True))
-            person_mask = self.person_df['Full_name'].apply(
-                lambda val: (val.lower() == self.entities['Person'].Full_name.lower()
-                             if 'Person' in self.entities else True))
-            general_df = self.person_df[loc_mask & date_mask & person_mask]
+            general_df = general_df[loc_mask & date_mask]
             # print(general_df)
             if len(general_df) > 1:
                 msg = f"There are {len(general_df)} grandmasters"
                 msg += f" from {self.entities['Location']}" if 'Location' in self.entities else ''
                 msg += f" born in {self.entities['Date']}" if 'Date' in self.entities else ''
-                msg += f" named {self.entities['Person'].Full_name}" if 'Person' in self.entities else ''
+                msg += f" named {person_name}" if person_name else ''
                 msg += '. Here are a few that I think might interest you:\n'
                 person_list_tuples = list(general_df.sample(n=min(len(general_df), 5)).itertuples(index=False))
                 person_list = [f"{i + 1}. {ent.Full_name} ID: {ent._2}"
                                for i, ent in enumerate(person_list_tuples)]
                 msg += '\n'.join(person_list)
                 msg += '\n Please feel free to either type the number or name of the grandmaster you want to know' \
-                       'about, or just ask another question if you would rather move on.'
+                       ' about, or just ask another question if you would rather move on.'
                 self.clarify = 'Person_mult_valid'
                 self.entities = person_list_tuples
                 return msg
@@ -453,9 +470,11 @@ class ChessBot:
             # Returning information about person
             if 'Person' in self.entities:
                 person_ent = self.entities['Person']
-                return self.build_person_msg(person_ent, msg)
+                return msg + self.build_person_msg(person_ent, msg)
 
         elif self.intent == 'Tournament':
+            print(self.entities)
+            person_name = self.entities['Person'][1] if 'Person' in self.entities else None
             location = self.entities['Location'] if 'Location' in self.entities else None
             loc_mask = self.tourn_df['Tournament_Location'].apply(
                 lambda x: (x.lower() in set(location.lower().replace(',', '').split()) if location else True))
@@ -465,7 +484,6 @@ class ChessBot:
 
             general_df = self.tourn_df[loc_mask & date_mask]
 
-            won_tourn = False
             if len(general_df) == 0:
                 msg = f"I couldn't think of any tournaments"
                 msg += f" in {location}" if location else ''
@@ -473,27 +491,30 @@ class ChessBot:
                 return msg + '.'
 
             if 'Person' in self.entities and 'Tournament' in self.entities:
+                # print('Person and tournament found')
                 winner_mask = general_df['winner'].apply(
-                    lambda val: val.lower() == self.entities['Person'].Full_name.lower() if val else False)
+                    lambda val: len(set(val.lower().split()) & set(person_name.lower().split()))
+                                == len(set(person_name.split())) if val else False)
                 tourn_mask = general_df['Tournament_Name'].apply(
                     lambda val: (val.lower() == self.entities['Tournament'].lower()
                                  if 'Tournament' in self.entities else True))
                 mask = winner_mask & tourn_mask
+                # print(mask)
                 if any(mask):
                     msg += 'Yes, '
-                    won_tourn = True
                     general_df = general_df[mask]
                 else:
                     msg += 'No, '
                     general_df = general_df[tourn_mask]
             elif 'Person' in self.entities:
                 winner_mask = general_df['winner'].apply(
-                    lambda val: val.lower() == self.entities['Person'].Full_name.lower())
+                    lambda val: len(set(val.lower().split()) & set(person_name.lower().split()))
+                                == len(set(person_name.lower().split())) if val else False)
                 if any(winner_mask):
                     msg += 'Yes, ' if len(self.entities) > 1 else ''
                     general_df = general_df[winner_mask]
                 else:
-                    msg += f"{self.entities['Person'].Full_name} has won no prominent tournaments"
+                    msg += f"{person_name} has won no prominent tournaments"
                     msg += f" in {location}" if location else ''
                     msg += f" during {self.entities['Date']}" if 'Date' in self.entities else ''
                     return msg
@@ -509,8 +530,9 @@ class ChessBot:
                 msg += f"I can think of multiple tournaments"
                 msg += f" from {location}" if location else ''
                 msg += f" held in {self.entities['Date']}" if 'Date' in self.entities else ''
-                msg += f" won by {self.entities['Person'].Full_name}" if 'Person' in self.entities else ''
-                msg += '. Here are a few that I think you might wanna look into: '
+                msg += f" won by{' someone named ' if len(general_df.winner.unique()) > 1 else ' '}{person_name}" \
+                    if 'Person' in self.entities else ''
+                msg += '. Here are a few that I think you might wanna look into:\n'
                 tourn_list = general_df.sample(n=min(len(general_df), 5))['Tournament_Name'].unique().tolist()
                 tourn_list_str = [f'{i + 1}. {ent}'
                                   for i, ent in enumerate(tourn_list)]
@@ -520,29 +542,89 @@ class ChessBot:
                 self.clarify = 'Tourn_mult'
                 self.entities = (general_df, tourn_list, 'Person' in self.entities)
                 return msg
-            return self.build_tourn_msg(general_df, won_tourn)
-
+            return msg + self.build_tourn_msg(general_df, 'Person' in self.entities)
 
         # elif intent ==
         else:
-            pass
+            if sentence.endswith('?') and self.user_context:
+                res_list = []
 
+                running_context = self.user_context.replace(',', ' ').split('\n')
+                QA_input = {
+                    'question': sentence,
+                    'context': ' '.join(running_context)
+                }
+
+                res = self.qa(QA_input)
+                # print(res)
+                end_idx = res['end']
+                start_idx = res['start']
+
+                running_context = [ctxt for ctxt in running_context if res['answer'] not in ctxt and ctxt.strip()]
+                while running_context and res['score'] > 1e-5:
+                    print(res)
+                    print(running_context)
+                    ans = ' '.join(word if word.lower() != 'i' else 'you' for word in res['answer'].split())
+
+                    if res['score'] > .5:
+                        res_list.append(ans)
+                    else:
+                        res_list.append(f'{ans}, but I\'m not too sure.')
+                    running_context = [ctxt.strip() for ctxt in running_context if res['answer'].strip() not in ctxt and ctxt.strip()]
+                    if len(running_context) == 0:
+                        break
+                    QA_input = {
+                        'question': sentence,
+                        'context': ' '.join(running_context)
+                    }
+                    res = self.qa(QA_input)
+
+                res_list_complete = [f"{i + 1}. {ent}" for i, ent in enumerate(res_list)]
+                if len(res_list_complete) > 0:
+                    msg = '\n'.join(res_list_complete)
+                else:
+                    msg = "I'm sorry, I don't know the answer to that question"
+            else:
+                msg = "Sorry, I'm not great for conversation, I'll make sure to remember this for the future though"
+                self.user_context += sentence
+                self.user_context += '.\n' if sentence[-1] != '.' else '\n'
+
+            return msg
+
+
+app = Flask(__name__)
+app.static_folder = 'static'
+
+@app.route("/")
+def home():
+    return render_template("index.html")
+
+@app.route("/get")
+def get_bot_response():
+    if bot.exit:
+        exit()
+    msg = request.args.get('msg')
+    return_msg = bot.respond(msg)
+    if bot.clarify == 'skip':
+        return_msg += '\n' + bot.respond(bot.clarified_sentence)
+    return return_msg
 
 if __name__ == "__main__":
-    start_time = time.time()
-    # print('a'.startswith('abc'))
-    conn = sqlite3.connect("chess_schema")
+    conn = sqlite3.connect("chess_final_schema")
     bot = ChessBot()
-    chat = True
-    print('Hi, I\'m Chester 1.0, a chatbot here to answer (hopefully) all your chess history questions!')
-    while chat:
-        msg = input().lower().replace('chess', '') if bot.clarify != 'skip' else bot.clarified_sentence
-        # for name in bot.person_df['First_name'].unique():
-        #     msg = f'Who is {name}'
-        if msg == 'logout':
-            print('cya')
-            break
-        print(bot.respond(msg))
+    app.run()
 
-    end_time = time.time()
-    print(end_time - start_time)
+# if __name__ == "__main__":
+#     start_time = time.time()
+#     # print('a'.startswith('abc'))
+#     conn = sqlite3.connect("chess_final_schema")
+#     bot = ChessBot()
+#     print(bot.respond(''))
+#     while not bot.exit:
+#         msg = input().lower().replace('chess', '') if bot.clarify != 'skip' else bot.clarified_sentence
+#         # for name in bot.person_df['First_name'].unique():
+#         #     msg = f'Who is {name}'
+#         print(bot.respond(msg))
+#
+#     end_time = time.time()
+#     print(end_time - start_time)

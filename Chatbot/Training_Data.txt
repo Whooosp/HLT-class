@@ -1,240 +1,199 @@
-Who is Ahmed Adly? | PERSON_WHO_IS
-Describe Ruben Gunawan | PERSON_WHO_IS
-Who is Saidali Iuldachev? | PERSON_WHO_IS
-Describe Óscar Panno | PERSON_WHO_IS
-Who is Sergej Dyachkov? | PERSON_WHO_IS
-Describe Ivajlo Enchev | PERSON_WHO_IS
-Who is Kidambi Sundararajan? | PERSON_WHO_IS
-Describe Vladimir Fedoseev | PERSON_WHO_IS
-Who is Leandro Krysa? | PERSON_WHO_IS
-Describe Sune Berg Hansen | PERSON_WHO_IS
-Who is Aleksandar Kovačević? | PERSON_WHO_IS
-Describe Arjun Erigaisi | PERSON_WHO_IS
-Who is Amirreza Pourra­mezanali? | PERSON_WHO_IS
-Describe Alexander Rustemov | PERSON_WHO_IS
-Who is Mikhail Ulybin? | PERSON_WHO_IS
-Describe Konstantin Aseev | PERSON_WHO_IS
-Who is Sergey Arkhipov? | PERSON_WHO_IS
-Describe Andreas Kelires | PERSON_WHO_IS
-Who is Paweł Czarnota? | PERSON_WHO_IS
-Describe Efim Geller | PERSON_WHO_IS
-Who is Marián? | PERSON_WHO_IS
-Describe Mikhail | PERSON_WHO_IS
-Who is Jiří? | PERSON_WHO_IS
-Describe Ian | PERSON_WHO_IS
-Who is Hipolito? | PERSON_WHO_IS
-Describe Hipolito | PERSON_WHO_IS
-Who is S.? | PERSON_WHO_IS
-Describe Petr | PERSON_WHO_IS
-Who is Valeriy? | PERSON_WHO_IS
-Describe Marián | PERSON_WHO_IS
-Who is Alexander? | PERSON_WHO_IS
-Describe Petr | PERSON_WHO_IS
-Who is Luka? | PERSON_WHO_IS
-Describe Radosław | PERSON_WHO_IS
-Who is Rogelio Jr.? | PERSON_WHO_IS
-Describe Dragiša | PERSON_WHO_IS
-Who is Bayarsaikhan? | PERSON_WHO_IS
-Describe Tigran | PERSON_WHO_IS
-Who is Semen I.? | PERSON_WHO_IS
-Describe Jozsef | PERSON_WHO_IS
-Who is Berescu? | PERSON_WHO_IS
-Describe Jayaram | PERSON_WHO_IS
-Who is Grandelius? | PERSON_WHO_IS
-Describe Lomasov | PERSON_WHO_IS
-Who is Bagirov? | PERSON_WHO_IS
-Describe González Acosta | PERSON_WHO_IS
-Who is Timoscenko? | PERSON_WHO_IS
-Describe Vocaturo | PERSON_WHO_IS
-Who is Nunn? | PERSON_WHO_IS
-Describe Vasiukov | PERSON_WHO_IS
-Who is Makogonov? | PERSON_WHO_IS
-Describe Hausrath | PERSON_WHO_IS
-Who is Aronian? | PERSON_WHO_IS
-Describe Landa | PERSON_WHO_IS
-Who is Arzumanian? | PERSON_WHO_IS
-Describe Kharchenko | PERSON_WHO_IS
-Who is Romanov? | PERSON_WHO_IS
-Describe Rogers | PERSON_WHO_IS
-Who is Jovanić? | PERSON_WHO_IS
-Describe Popov | PERSON_WHO_IS
-Where is Dzhakay Dzhakaev from? | PERSON_WHERE_IS
-Where was Jinrong Liang born? | PERSON_WHERE_IS
-What country was H. James Plaskett born in? | PERSON_WHERE_IS
-What is Jānis Klovāns's federation? | PERSON_WHERE_IS
-Where is Gawain C. B. Jones from? | PERSON_WHERE_IS
-Where was Stefan Kindermann born? | PERSON_WHERE_IS
-What country was Francesco Sonis born in? | PERSON_WHERE_IS
-What is Martijn Dambacher's federation? | PERSON_WHERE_IS
-Where is Goran Čabrilo from? | PERSON_WHERE_IS
-Where was Arseny Alavkin born? | PERSON_WHERE_IS
-What country was Kayden Troff born in? | PERSON_WHERE_IS
-What is Georg Meier's federation? | PERSON_WHERE_IS
-Where is Olexandr Bortnyk from? | PERSON_WHERE_IS
-Where was Salo Flohr born? | PERSON_WHERE_IS
-What country was Emmanuel Bricard born in? | PERSON_WHERE_IS
-What is Daniel Yanofsky's federation? | PERSON_WHERE_IS
-Where is Marián Jurčík from? | PERSON_WHERE_IS
-Where was Pontus Carlsson born? | PERSON_WHERE_IS
-What country was Gábor Kállai born in? | PERSON_WHERE_IS
-What is Viesturs Meijers's federation? | PERSON_WHERE_IS
-Where is Dimitris Anagnostopoulos from? | PERSON_WHERE_IS
-Where was Oleg Maiorov born? | PERSON_WHERE_IS
-What country was Igor Liutsko born in? | PERSON_WHERE_IS
-What is Tal Baron's federation? | PERSON_WHERE_IS
-Where is Pavel Blatný from? | PERSON_WHERE_IS
-Where was Éric Prié born? | PERSON_WHERE_IS
-What country was Nikolai Chadaev born in? | PERSON_WHERE_IS
-What is Lance Henderson de La Fuente's federation? | PERSON_WHERE_IS
-Where is Hans Moke Niemann from? | PERSON_WHERE_IS
-Where was Dmitry Kryakvin born? | PERSON_WHERE_IS
-What country was Yaroslav Zinchenko born in? | PERSON_WHERE_IS
-What is Cemil Aghamaliyev's federation? | PERSON_WHERE_IS
-Where is Vladimir Baklan from? | PERSON_WHERE_IS
-Where was Aleksandar Kovačević born? | PERSON_WHERE_IS
-What country was Alexey Korotylev born in? | PERSON_WHERE_IS
-What is Valeri Yandemirov's federation? | PERSON_WHERE_IS
-Where is José González García from? | PERSON_WHERE_IS
-Where was Anton Smirnov born? | PERSON_WHERE_IS
-What country was Darcy Lima born in? | PERSON_WHERE_IS
-What is Bayarsaikhan Gundavaa's federation? | PERSON_WHERE_IS
-Where is Efim from? | PERSON_WHERE_IS
-Where was Arkadij born? | PERSON_WHERE_IS
-What country was Larry born in? | PERSON_WHERE_IS
-What is Marc Andria's federation? | PERSON_WHERE_IS
-Where is Klementy from? | PERSON_WHERE_IS
-Where was Danny born? | PERSON_WHERE_IS
-What country was Nikola born in? | PERSON_WHERE_IS
-What is Nukhim N.'s federation? | PERSON_WHERE_IS
-Where is Walter from? | PERSON_WHERE_IS
-Where was Miloš born? | PERSON_WHERE_IS
-What country was Hikaru born in? | PERSON_WHERE_IS
-What is John D. M.'s federation? | PERSON_WHERE_IS
-Where is Vadim from? | PERSON_WHERE_IS
-Where was Yinglun born? | PERSON_WHERE_IS
-What country was Arnaud born in? | PERSON_WHERE_IS
-What is Boris's federation? | PERSON_WHERE_IS
-Where is Michael from? | PERSON_WHERE_IS
-Where was Marat born? | PERSON_WHERE_IS
-What country was Pavel born in? | PERSON_WHERE_IS
-What is Roberto's federation? | PERSON_WHERE_IS
-Where is Irisberto from? | PERSON_WHERE_IS
-Where was Gerhard born? | PERSON_WHERE_IS
-What country was Abdelrahman born in? | PERSON_WHERE_IS
-What is Georg's federation? | PERSON_WHERE_IS
-Where is Manuel from? | PERSON_WHERE_IS
-Where was Tamaz born? | PERSON_WHERE_IS
-What country was Andrey born in? | PERSON_WHERE_IS
-What is Hikaru's federation? | PERSON_WHERE_IS
-Where is Jan from? | PERSON_WHERE_IS
-Where was Štěpán born? | PERSON_WHERE_IS
-What country was Costicǎ-Ciprian born in? | PERSON_WHERE_IS
-What is David's federation? | PERSON_WHERE_IS
-Where is Meelis from? | PERSON_WHERE_IS
-Where was Elina born? | PERSON_WHERE_IS
-What country was Róbert born in? | PERSON_WHERE_IS
-What is Alexander's federation? | PERSON_WHERE_IS
-Where is Georgi from? | PERSON_WHERE_IS
-Where was Igor born? | PERSON_WHERE_IS
-What country was Viktor born in? | PERSON_WHERE_IS
-What is Gupta's federation? | PERSON_WHERE_IS
-Where is Sebag from? | PERSON_WHERE_IS
-Where was Godena born? | PERSON_WHERE_IS
-What country was Muñoz born in? | PERSON_WHERE_IS
-What is Oll's federation? | PERSON_WHERE_IS
-Where is Radulski from? | PERSON_WHERE_IS
-Where was Ipatov born? | PERSON_WHERE_IS
-What country was Levin born in? | PERSON_WHERE_IS
-What is Karjakin's federation? | PERSON_WHERE_IS
-Where is Dvoirys from? | PERSON_WHERE_IS
-Where was Smirnov born? | PERSON_WHERE_IS
-What country was Barbosa born in? | PERSON_WHERE_IS
-What is Janovsky's federation? | PERSON_WHERE_IS
-Where is Pérez Mitjans from? | PERSON_WHERE_IS
-Where was Erdoğdu born? | PERSON_WHERE_IS
-What country was Yevseev born in? | PERSON_WHERE_IS
-What is Raičević's federation? | PERSON_WHERE_IS
-Where is Chernin from? | PERSON_WHERE_IS
-Where was Kraidman born? | PERSON_WHERE_IS
-What country was Shabalov born in? | PERSON_WHERE_IS
-What is Bukavshin's federation? | PERSON_WHERE_IS
-Where is Brkić from? | PERSON_WHERE_IS
-Where was Dzhakaev born? | PERSON_WHERE_IS
-What country was Kharitonov born in? | PERSON_WHERE_IS
-What is Teschner's federation? | PERSON_WHERE_IS
-Where is Khruschiov from? | PERSON_WHERE_IS
-Where was Fedorowicz born? | PERSON_WHERE_IS
-What country was Ibrahimov born in? | PERSON_WHERE_IS
-What is Ivanov's federation? | PERSON_WHERE_IS
-Where is Vishnu from? | PERSON_WHERE_IS
-Where was Arizmendi Martínez born? | PERSON_WHERE_IS
-What country was Ibrahimov born in? | PERSON_WHERE_IS
-What is Rasmussen's federation? | PERSON_WHERE_IS
-Where is Predojević from? | PERSON_WHERE_IS
-Where was Gasanov born? | PERSON_WHERE_IS
-What country was Brunner born in? | PERSON_WHERE_IS
-What is Høi's federation? | PERSON_WHERE_IS
-Where is Lintchevski from? | PERSON_WHERE_IS
-Where was McShane born? | PERSON_WHERE_IS
-What country was Lomasov born in? | PERSON_WHERE_IS
-What is Bricard's federation? | PERSON_WHERE_IS
-Did Aleksandr Zlochevsky win the 1976 Mar del Plata chess tournament? | TOURNAMENT_WHO_IS
-Who won the 1976 Mar del Plata chess tournament? | TOURNAMENT_WHO_IS
-Has Aleksandr Volodin ever won the Mar del Plata chess tournament? | TOURNAMENT_WHO_IS
-How many times has Andriy Vovk won the Mar del Plata chess tournament? | TOURNAMENT_WHO_IS
-Did Mikhail Simantsev win the 1999 Rubinstein Memorial? | TOURNAMENT_WHO_IS
-Who won the 1999 Rubinstein Memorial? | TOURNAMENT_WHO_IS
-Has Anthony C. Kosten ever won the Rubinstein Memorial? | TOURNAMENT_WHO_IS
-How many times has Aleksandr Poluljahov won the Rubinstein Memorial? | TOURNAMENT_WHO_IS
-Did Yaroslav Zinchenko win the 1982 Rubinstein Memorial? | TOURNAMENT_WHO_IS
-Who won the 1982 Rubinstein Memorial? | TOURNAMENT_WHO_IS
-Has Joseph G. Gallagher ever won the Rubinstein Memorial? | TOURNAMENT_WHO_IS
-How many times has Vitaly Teterev won the Rubinstein Memorial? | TOURNAMENT_WHO_IS
-Did Teimour Radjabov win the 1970 Rubinstein Memorial? | TOURNAMENT_WHO_IS
-Who won the 1970 Rubinstein Memorial? | TOURNAMENT_WHO_IS
-Has Liren Ding ever won the Rubinstein Memorial? | TOURNAMENT_WHO_IS
-How many times has Marcin Tazbir won the Rubinstein Memorial? | TOURNAMENT_WHO_IS
-Did Anton Kovalyov win the 1984 World Open chess tournament? | TOURNAMENT_WHO_IS
-Who won the 1984 World Open chess tournament? | TOURNAMENT_WHO_IS
-Has Yuri Shabanov ever won the World Open chess tournament? | TOURNAMENT_WHO_IS
-How many times has Hans Ree won the World Open chess tournament? | TOURNAMENT_WHO_IS
-Did Grigory Serper win the 1989 Keres Memorial? | TOURNAMENT_WHO_IS
-Who won the 1989 Keres Memorial? | TOURNAMENT_WHO_IS
-Has Gergely Kantor ever won the Keres Memorial? | TOURNAMENT_WHO_IS
-How many times has Michał Krasenkow won the Keres Memorial? | TOURNAMENT_WHO_IS
-Did Zlatko Ilinčić win the 1876 American Chess Congress? | TOURNAMENT_WHO_IS
-Who won the 1876 American Chess Congress? | TOURNAMENT_WHO_IS
-Has Ján Krejčí ever won the American Chess Congress? | TOURNAMENT_WHO_IS
-How many times has Vladimir B. Tukmakov won the American Chess Congress? | TOURNAMENT_WHO_IS
-Did Srivatshav Rahul win the 2004 Staunton Memorial? | TOURNAMENT_WHO_IS
-Who won the 2004 Staunton Memorial? | TOURNAMENT_WHO_IS
-Has Vyacheslav Ikonnikov ever won the Staunton Memorial? | TOURNAMENT_WHO_IS
-How many times has Tomáš Oral won the Staunton Memorial? | TOURNAMENT_WHO_IS
-Did Spyridon Kapnisis win the 1994 Capablanca Memorial? | TOURNAMENT_WHO_IS
-Who won the 1994 Capablanca Memorial? | TOURNAMENT_WHO_IS
-Has Kirill Stupak ever won the Capablanca Memorial? | TOURNAMENT_WHO_IS
-How many times has Ivan Šarić won the Capablanca Memorial? | TOURNAMENT_WHO_IS
-Did Josep Manuel López Martínez win the 1933-4 Leningrad City Chess Championship? | TOURNAMENT_WHO_IS
-Who won the 1933-4 Leningrad City Chess Championship? | TOURNAMENT_WHO_IS
-Has Kaiqi Yang ever won the Leningrad City Chess Championship? | TOURNAMENT_WHO_IS
-How many times has Jiří Štoček won the Leningrad City Chess Championship? | TOURNAMENT_WHO_IS
-Where is Berlin City Chess Championship held? | TOURNAMENT_WHERE_IS
-Is Berlin City Chess Championship held in Netanya, Israel? | TOURNAMENT_WHERE_IS
-Where is Reggio Emilia chess tournament held? | TOURNAMENT_WHERE_IS
-Is Reggio Emilia chess tournament held in Vienna, Austria? | TOURNAMENT_WHERE_IS
+Who is Radek Kalod? | PERSON_WHO_IS
+Can you please describe Eduard Meduna | PERSON_WHO_IS
+Describe Arian | PERSON_WHO_IS
+If you were to talk about Meijers, what would you say? | PERSON_WHO_IS
+Put into words the background of Darini | PERSON_WHO_IS
+How many chess grandmasters are from Moravska Ostrava? | PERSON_WHO_IS
+What grandmasters are there? | PERSON_WHO_IS
+How many grandmasters are there? | PERSON_WHO_IS
+Who is Tamaz Giorgadze? | PERSON_WHO_IS
+Can you please describe Miguel Llanes Hurtado | PERSON_WHO_IS
+Describe Artur | PERSON_WHO_IS
+If you were to talk about Andersson, what would you say? | PERSON_WHO_IS
+Put into words the background of Vaisser | PERSON_WHO_IS
+How many chess grandmasters are from Nuremberg? | PERSON_WHO_IS
+What grandmasters are there? | PERSON_WHO_IS
+How many grandmasters are there? | PERSON_WHO_IS
+Who is Vladimir Romanenko? | PERSON_WHO_IS
+Can you please describe Vasily Papin | PERSON_WHO_IS
+Describe Andreas | PERSON_WHO_IS
+If you were to talk about Tukhaev, what would you say? | PERSON_WHO_IS
+Put into words the background of Stojanović | PERSON_WHO_IS
+How many chess grandmasters are from Vienna? | PERSON_WHO_IS
+What grandmasters are there? | PERSON_WHO_IS
+How many grandmasters are there? | PERSON_WHO_IS
+Who is Yaroslav Zherebukh? | PERSON_WHO_IS
+Can you please describe Sergey Ionov | PERSON_WHO_IS
+Describe Akshayraj | PERSON_WHO_IS
+If you were to talk about Halkias, what would you say? | PERSON_WHO_IS
+Put into words the background of Adhiban | PERSON_WHO_IS
+How many chess grandmasters are from Gibraltar? | PERSON_WHO_IS
+What grandmasters are there? | PERSON_WHO_IS
+How many grandmasters are there? | PERSON_WHO_IS
+Who is László Bárczay? | PERSON_WHO_IS
+Can you please describe Joshua Daniel Ruiz Castillo | PERSON_WHO_IS
+Describe Vasily B. | PERSON_WHO_IS
+If you were to talk about Smirnov, what would you say? | PERSON_WHO_IS
+Put into words the background of Pavlov | PERSON_WHO_IS
+How many chess grandmasters are from Paris? | PERSON_WHO_IS
+What grandmasters are there? | PERSON_WHO_IS
+How many grandmasters are there? | PERSON_WHO_IS
+Where is Robin Van Kampen from? | PERSON_WHERE_IS
+Where was Aleksandr Poluljahov born? | PERSON_WHERE_IS
+What is Tomáš Likavský's country of origin? | PERSON_WHERE_IS
+What is Gevorg Harutjunyan's federation? | PERSON_WHERE_IS
+Where is Yevgeniy Vladimirov from? | PERSON_WHERE_IS
+Where was P. Iniyan born? | PERSON_WHERE_IS
+What is Evgeny Tomashevsky's country of origin? | PERSON_WHERE_IS
+What is Jiangchuan Ye's federation? | PERSON_WHERE_IS
+Where is Aleksandar Matanović from? | PERSON_WHERE_IS
+Where was Iuri Shkuro born? | PERSON_WHERE_IS
+What is Miguel Najdorf's country of origin? | PERSON_WHERE_IS
+What is Lembit Oll's federation? | PERSON_WHERE_IS
+Where is Torbjørn Ringdal Hansen from? | PERSON_WHERE_IS
+Where was Yasser Seirawan born? | PERSON_WHERE_IS
+What is Kamil Mitoń's country of origin? | PERSON_WHERE_IS
+What is Pentala Harikrishna's federation? | PERSON_WHERE_IS
+Where is M. Amin Tabatabaei from? | PERSON_WHERE_IS
+Where was Mesgen Amanov born? | PERSON_WHERE_IS
+What is Manuel Rivas Pastor's country of origin? | PERSON_WHERE_IS
+What is George-Gabriel Grigore's federation? | PERSON_WHERE_IS
+Did Karen H. Grigoryan win the 2007 Rubinstein Memorial? | TOURNAMENT_WHO_IS
+Has Ruslan Pogorelov won the Leningrad City Chess Championship? | TOURNAMENT_WHO_IS
+Has Merab Gagunashvili won anything? | TOURNAMENT_WHO_IS
+Has Petr Neuman won any tournament? | TOURNAMENT_WHO_IS
+Who won the 2007 Rubinstein Memorial? | TOURNAMENT_WHO_IS
+How many times has Valentina Gunina won the Rubinstein Memorial? | TOURNAMENT_WHO_IS
+Was the 2007 Rubinstein Memorial won by Dimitri Komarov? | TOURNAMENT_WHO_IS
+What tournaments has Andrew Soltis won? | TOURNAMENT_WHO_IS
+Do you know if Yusnel Bacallao Alonso has won any tournaments? | TOURNAMENT_WHO_IS
+What has Pavel Maletin won? | TOURNAMENT_WHO_IS
+Did Róbert Ruck win the 1936 Leningrad City Chess Championship? | TOURNAMENT_WHO_IS
+Has Vladimir Kosyrev won the Paris City Chess Championship? | TOURNAMENT_WHO_IS
+Has Jonathan P. Levitt won anything? | TOURNAMENT_WHO_IS
+Has Petr Hába won any tournament? | TOURNAMENT_WHO_IS
+Who won the 1936 Leningrad City Chess Championship? | TOURNAMENT_WHO_IS
+How many times has Yuri Vovk won the Leningrad City Chess Championship? | TOURNAMENT_WHO_IS
+Was the 1936 Leningrad City Chess Championship won by Yuri L. Averbakh? | TOURNAMENT_WHO_IS
+What tournaments has Srivatshav Rahul won? | TOURNAMENT_WHO_IS
+Do you know if Włodzimierz Schmidt has won any tournaments? | TOURNAMENT_WHO_IS
+What has Alexey Kim won? | TOURNAMENT_WHO_IS
+Did Raset Ziatdinov win the 1932 DSB Congress? | TOURNAMENT_WHO_IS
+Has Vahap Şanal won the Zurich Chess Challenge? | TOURNAMENT_WHO_IS
+Has Nino Kirov won anything? | TOURNAMENT_WHO_IS
+Has Viswanathan Anand won any tournament? | TOURNAMENT_WHO_IS
+Who won the 1932 DSB Congress? | TOURNAMENT_WHO_IS
+How many times has Csaba Horvath won the DSB Congress? | TOURNAMENT_WHO_IS
+Was the 1932 DSB Congress won by Mark Bluvshtein? | TOURNAMENT_WHO_IS
+What tournaments has Lars Schandorff won? | TOURNAMENT_WHO_IS
+Do you know if Yuri Razuvaev has won any tournaments? | TOURNAMENT_WHO_IS
+What has Jinshi Bai won? | TOURNAMENT_WHO_IS
+Did Luka Lenič win the 1969 Paris City Chess Championship? | TOURNAMENT_WHO_IS
+Has Peter Leko won the Xtracon Chess Open? | TOURNAMENT_WHO_IS
+Has Alexander Finkel won anything? | TOURNAMENT_WHO_IS
+Has Mark Taimanov won any tournament? | TOURNAMENT_WHO_IS
+Who won the 1969 Paris City Chess Championship? | TOURNAMENT_WHO_IS
+How many times has Alexander Goldin won the Paris City Chess Championship? | TOURNAMENT_WHO_IS
+Was the 1969 Paris City Chess Championship won by Jurij Tihonov? | TOURNAMENT_WHO_IS
+What tournaments has Slavoljub Marjanović won? | TOURNAMENT_WHO_IS
+Do you know if Neil McDonald has won any tournaments? | TOURNAMENT_WHO_IS
+What has Miroslav D. Miljković won? | TOURNAMENT_WHO_IS
+Did Ioannis K. Papadopoulos win the 2012 Torre Memorial? | TOURNAMENT_WHO_IS
+Has Mikheil Mchedlishvili won the Torre Memorial? | TOURNAMENT_WHO_IS
+Has Ventzislav Inkiov won anything? | TOURNAMENT_WHO_IS
+Has Alexander Nosenko won any tournament? | TOURNAMENT_WHO_IS
+Who won the 2012 Torre Memorial? | TOURNAMENT_WHO_IS
+How many times has Jiří Štoček won the Torre Memorial? | TOURNAMENT_WHO_IS
+Was the 2012 Torre Memorial won by David García Ilundáin? | TOURNAMENT_WHO_IS
+What tournaments has Lexy Ortega won? | TOURNAMENT_WHO_IS
+Do you know if Leonid Gofshtein has won any tournaments? | TOURNAMENT_WHO_IS
+What has Boris Gulko won? | TOURNAMENT_WHO_IS
 Where is Rubinstein Memorial held? | TOURNAMENT_WHERE_IS
-Is Rubinstein Memorial held in Esbjerg, Denmark ? | TOURNAMENT_WHERE_IS
-Where is Hastings International Chess Congress held? | TOURNAMENT_WHERE_IS
-Is Hastings International Chess Congress held in New York? | TOURNAMENT_WHERE_IS
-Where is Leningrad City Chess Championship held? | TOURNAMENT_WHERE_IS
-Is Leningrad City Chess Championship held in Dortmund, Germany? | TOURNAMENT_WHERE_IS
-Where is Leningrad City Chess Championship held? | TOURNAMENT_WHERE_IS
-Is Leningrad City Chess Championship held in Biblao, Spain? | TOURNAMENT_WHERE_IS
-Where is Reggio Emilia chess tournament held? | TOURNAMENT_WHERE_IS
-Is Reggio Emilia chess tournament held in Monte Carlo, Monaco? | TOURNAMENT_WHERE_IS
+Is Capablanca Memorial held in Paris? | TOURNAMENT_WHERE_IS
+How many tournaments are held in United States? | TOURNAMENT_WHERE_IS
+Which country was Rubinstein Memorial held? | TOURNAMENT_WHERE_IS
+Where is Capablanca Memorial held? | TOURNAMENT_WHERE_IS
+Is Silesian Chess Congress held in Berlin? | TOURNAMENT_WHERE_IS
+How many tournaments are held in Londgon? | TOURNAMENT_WHERE_IS
+Which country was Leningrad City Chess Championship held? | TOURNAMENT_WHERE_IS
+Where is American Chess Congress held? | TOURNAMENT_WHERE_IS
+Is Capablanca Memorial held in Biblao, Spain? | TOURNAMENT_WHERE_IS
+How many tournaments are held in Lublin, Poland? | TOURNAMENT_WHERE_IS
+Which country was Rubinstein Memorial held? | TOURNAMENT_WHERE_IS
+Where is American Chess Congress held? | TOURNAMENT_WHERE_IS
+Is Tal Memorial held in Austria? | TOURNAMENT_WHERE_IS
+How many tournaments are held in Austria? | TOURNAMENT_WHERE_IS
+Which country was Rubinstein Memorial held? | TOURNAMENT_WHERE_IS
 Where is Paris City Chess Championship held? | TOURNAMENT_WHERE_IS
-Is Paris City Chess Championship held in Mérida, Yucatán, Mexico.? | TOURNAMENT_WHERE_IS
-Where is Dortmund Sparkassen Chess Meeting held? | TOURNAMENT_WHERE_IS
-Is Dortmund Sparkassen Chess Meeting held in Germany? | TOURNAMENT_WHERE_IS
-Where is Hastings International Chess Congress held? | TOURNAMENT_WHERE_IS
-Is Hastings International Chess Congress held in Leningrad, Russia? | TOURNAMENT_WHERE_IS
+Is Moscow City Chess Championship held in Reggio Emilia, Italy? | TOURNAMENT_WHERE_IS
+How many tournaments are held in Zurich, Switzerland? | TOURNAMENT_WHERE_IS
+Which country was Tal Memorial held? | TOURNAMENT_WHERE_IS
+How old is Dmitry Jakovenko? | PERSON_WHEN_IS
+What Boško Abramović's age? | PERSON_WHEN_IS
+When was Svetozar Gligorić born? | PERSON_WHEN_IS
+When did Evgeny Tomashevsky pass away? | PERSON_WHEN_IS
+Is Dragoljub Čirić still alive? | PERSON_WHEN_IS
+Which tournaments were held in 1936? | TOURNAMENT_WHEN_IS
+Was Munich 1941 held in 1914? | TOURNAMENT_WHEN_IS
+When was the first edition of Baden-Baden 1870? | TOURNAMENT_WHEN_IS
+When was the lastest edition of the London 1899 played? | TOURNAMEN_WHEN_IS
+How old is Enrico Paoli? | PERSON_WHEN_IS
+What Dennis Wagner's age? | PERSON_WHEN_IS
+When was Slim Belkhodja born? | PERSON_WHEN_IS
+When did Tal Baron pass away? | PERSON_WHEN_IS
+Is Iván Salgado López still alive? | PERSON_WHEN_IS
+Which tournaments were held in 2007? | TOURNAMENT_WHEN_IS
+Was Vienna 1908 held in 2007? | TOURNAMENT_WHEN_IS
+When was the first edition of London 1851? | TOURNAMENT_WHEN_IS
+When was the lastest edition of the Munich 1941 played? | TOURNAMEN_WHEN_IS
+How old is Stefán Kristjánsson? | PERSON_WHEN_IS
+What Florin Gheorghiu's age? | PERSON_WHEN_IS
+When was Maxim Dlugy born? | PERSON_WHEN_IS
+When did Alexey Khruschiov pass away? | PERSON_WHEN_IS
+Is Kaido Kulaots still alive? | PERSON_WHEN_IS
+Which tournaments were held in 1970? | TOURNAMENT_WHEN_IS
+Was Vidmar Memorial held in 2012? | TOURNAMENT_WHEN_IS
+When was the first edition of IBM International Chess Tournament? | TOURNAMENT_WHEN_IS
+When was the lastest edition of the Berlin 1881 played? | TOURNAMEN_WHEN_IS
+How old is Jordi Magem Badals? | PERSON_WHEN_IS
+What Hicham Hamdouchi's age? | PERSON_WHEN_IS
+When was Vasilios Kotronias born? | PERSON_WHEN_IS
+When did Bator Sambuev pass away? | PERSON_WHEN_IS
+Is Nikola Spiridonov still alive? | PERSON_WHEN_IS
+Which tournaments were held in 1970? | TOURNAMENT_WHEN_IS
+Was Tata Steel held in 1970? | TOURNAMENT_WHEN_IS
+When was the first edition of Paris 1867? | TOURNAMENT_WHEN_IS
+When was the lastest edition of the Leningrad City Chess Championship played? | TOURNAMEN_WHEN_IS
+How old is Ljubomir Ljubojević? | PERSON_WHEN_IS
+What Marko Tratar's age? | PERSON_WHEN_IS
+When was Roy Saptarshi born? | PERSON_WHEN_IS
+When did Alfredo Giaccio pass away? | PERSON_WHEN_IS
+Is Walter Browne still alive? | PERSON_WHEN_IS
+Which tournaments were held in 2009? | TOURNAMENT_WHEN_IS
+Was Phillips & Drew Kings held in 1936? | TOURNAMENT_WHEN_IS
+When was the first edition of Euwe Memorial? | TOURNAMENT_WHEN_IS
+When was the lastest edition of the Monte Carlo played? | TOURNAMEN_WHEN_IS
+I like playing badminton. | MISC
+That's great! I actually love visiting London for vacation. | MISC
+My favorite two trains are red and blue. | MISC
+Hi, how are you? | MISC
+You think darkness is your ally? I was born in the dark, molded by it. | MISC
+What are you? | MISC
+You wanna know how I got these scars? | MISC
+I see what you mean, mhm mhm, yes good. | MISC
+Tennis is my favorite sport, it so fun to watch them battle it out on the grass. | MISC
+He was so preoccupied with whether or not he could that he failed to stop to consider if he should. | MISC
+My favorite food includes burgers, fries, and shakes. | MISC
+The political climate in the present is very strange. | MISC
+iOS is worse than windows, and nobody can change my mind. | MISC
+Software is eating your lunch. | MISC
+I like butterfingers. | MISC
+I love when I write code and it works instantly. | MISC
+I don't really like people who judge others. | MISC
+I also like pasta as well. | MISC
+I enjoy watching professionals, regardless of what they do. | MISC
+I hate writing essays. | MISC
+I disagree that vanilla is better than chocolate. | MISC
+I would love to meet s1mple in real life. | MISC
+Chicken is my favorite food. | MISC
+I like how time is a universal healing factor. | MISC

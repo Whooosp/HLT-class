@@ -6,23 +6,23 @@ from transformers import AutoModelForSequenceClassification, AutoTokenizer, pipe
 from sklearn.model_selection import train_test_split
 from torch.utils.data import Dataset, DataLoader
 import time
-import numpy as np
 import gc
 import csv
 
 
-LABELS = ('PERSON_WHO_IS', 'PERSON_WHERE_IS', 'TOURNAMENT_WHO_IS', 'TOURNAMENT_WHERE_IS')
+LABELS = ('PERSON_WHO_IS', 'PERSON_WHERE_IS', 'PERSON_WHEN_IS',
+          'TOURNAMENT', 'MISC')
 
-
+# Intent classifier model architecture, training done in Colab
 class BertClassifier(torch.nn.Module):
     def __init__(self):
         super(BertClassifier, self).__init__()
 
-        self.encoder = AutoModelForSequenceClassification.from_pretrained("microsoft/deberta-v3-large", num_labels=4,
+        self.encoder = AutoModelForSequenceClassification.from_pretrained("microsoft/deberta-v3-large", num_labels=len(LABELS),
                                                                           problem_type="Single_label_classification")
 
     def forward(self, x):
-        print(x['input_ids'].get_device())
+        # print(x['input_ids'].get_device())
         logits = self.encoder(input_ids=x['input_ids'],
                               token_type_ids=x['token_type_ids'],
                               attention_mask=x['attention_mask'])
@@ -49,6 +49,7 @@ class QuestionDataset(Dataset):
 
 def multi_acc(y_pred, y_test):
     y_pred_tag = torch.round(torch.nn.functional.softmax(y_pred, dim=1))
+    # print(y_pred_tag)
 
     correct_results_sum = sum(y_pred_tag[i][y_test[i]] == 1 for i in range(len(y_test)))
     precision = 0.
@@ -102,7 +103,7 @@ def train_one_epoch(model, train_loader, optimizer, loss_fn, epoch_index):
         # Compute the loss and its gradients
 
         loss = loss_fn(outputs, labels)
-        loss = loss / 4
+        # loss = loss / 4
         loss.backward()
 
         # print(loss)
@@ -121,7 +122,7 @@ def train_one_epoch(model, train_loader, optimizer, loss_fn, epoch_index):
 
         # Gather data and report
         running_loss += loss.item()
-        total_loss += loss.item() * 4
+        total_loss += loss.item()
         if i % 100 == 99:
             last_loss = running_loss / 25  # loss per batch
             total_acc = train_acc / 100
@@ -182,12 +183,13 @@ def test_loop(dataloader, model, loss_fn):
     return correct, test_loss, predictions
 
 
-def run_train(model, train_dataset, val_dataset, train_batch, lr, EPOCHS):
+def run_train(model, train_dataset, val_dataset, train_batch, lr, EPOCHS, step_size, gamma):
     train_loader = DataLoader(train_dataset, batch_size=train_batch, shuffle=True)
     validation_loader = DataLoader(val_dataset, batch_size=1)
 
     loss_fn = torch.nn.CrossEntropyLoss()
     optimizer = torch.optim.AdamW(model.parameters(), lr=lr)
+    scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=1, gamma=gamma)
 
     best_vloss = 1_000_000.
 
@@ -231,10 +233,10 @@ def run_train(model, train_dataset, val_dataset, train_batch, lr, EPOCHS):
     print(f'--- {(end_time - start_time) / 3600} hours ---')
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     # print(torch.cuda.is_available())
-    # device = "cuda" if torch.cuda.is_available() else "cpu"
-    device = 'cpu'
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    # device = 'cpu'
     #
     tokenizer = AutoTokenizer.from_pretrained("microsoft/deberta-v3-large")
     #
@@ -244,13 +246,16 @@ if __name__ == "__main__":
     total_df = pd.read_csv('Training_Data.txt', quoting=csv.QUOTE_NONE, sep='|', names=['Text', 'Label'])
     total_df['Text'] = total_df['Text'].apply(
         lambda val: ''.join(unicodedata.normalize('NFKD', val).encode('ascii', 'ignore').decode()).strip())
-    total_df['Label'] = total_df['Label'].apply(lambda val: val.strip())
+    total_df['Label'] = total_df['Label'].apply(lambda val: 'TOURNAMENT'
+                                                if val.strip().startswith('TOURNAMEN') else val.strip())
+
+    print(total_df)
 
     train, test = train_test_split(total_df, test_size=0.2)
 
     train_dataset, test_dataset = QuestionDataset(train, device, tokenizer), QuestionDataset(test, device, tokenizer)
 
-    run_train(bert_model, train_dataset, test_dataset, 16, 3e-5, 3)
+    run_train(bert_model, train_dataset, test_dataset, 16, 2e-5, 10, step_size=1, gamma=.75)
 
     # print(train, test)
 
