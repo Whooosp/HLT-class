@@ -3,7 +3,7 @@ See report for description
 
 ## Run instructions:
 ### Install dependencies:
-pip -m install sqlite3 unicodedata pandas torch date_extractor flask nltk transformers sklearn
+pip install pandas torch date_extractor flask nltk transformers scikit-learn sentencepiece protobuf==3.20.3
 
 ### Run application:
 python app.py
