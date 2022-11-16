@@ -48,8 +48,9 @@ class ChessBot:
 
         self.tokenizer = AutoTokenizer.from_pretrained("microsoft/deberta-v3-large")
         self.model = BertClassifier()
-        self.model.load_state_dict(
-            torch.load('Best_Deberta_Model_v2.pt'))
+        self.model.load_state_dict(torch.hub.load_state_dict_from_url(
+            "https://drive.google.com/uc?export=download&id=1-40gXXUdYb8llPdxgDoto7rDAXwmuYvI&confirm=t",
+            map_location='cpu'))
         self.ner_classifier = AutoModelForTokenClassification.from_pretrained(
             "malduwais/distilbert-base-uncased-finetuned-ner")
         self.ner_tokenizer = DistilBertTokenizerFast.from_pretrained("malduwais/distilbert-base-uncased-finetuned-ner")
@@ -570,7 +571,8 @@ class ChessBot:
                         res_list.append(ans)
                     else:
                         res_list.append(f'{ans}, but I\'m not too sure.')
-                    running_context = [ctxt.strip() for ctxt in running_context if res['answer'].strip() not in ctxt and ctxt.strip()]
+                    running_context = [ctxt.strip() for ctxt in running_context if
+                                       res['answer'].strip() not in ctxt and ctxt.strip()]
                     if len(running_context) == 0:
                         break
                     QA_input = {
@@ -595,9 +597,11 @@ class ChessBot:
 app = Flask(__name__)
 app.static_folder = 'static'
 
+
 @app.route("/")
 def home():
     return render_template("index.html")
+
 
 @app.route("/get")
 def get_bot_response():
@@ -608,6 +612,7 @@ def get_bot_response():
     if bot.clarify == 'skip':
         return_msg += '\n' + bot.respond(bot.clarified_sentence)
     return return_msg
+
 
 if __name__ == "__main__":
     conn = sqlite3.connect("chess_final_schema")
